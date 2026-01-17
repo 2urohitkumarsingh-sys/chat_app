@@ -12,9 +12,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "devDependencies": {
+  "type": "module",
+  "dependencies": {
     "daisyui": "^4.12.24"
   }
 }
