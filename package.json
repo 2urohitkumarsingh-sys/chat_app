@@ -1,0 +1,20 @@
+{
+  "name": "chatify-app",
+  "version": "1.0.0",
+  "description": "- npm init -y\r - npm i express@4.21.2 mongoose@8.10.1 jsonwebtoken@9.0.2 bcryptjs@2.4.3",
+  "main": "index.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm run start --prefix backend"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "daisyui": "^4.12.24"
+  }
+}
