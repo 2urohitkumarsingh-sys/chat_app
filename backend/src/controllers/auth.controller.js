@@ -18,7 +18,6 @@ export const signup = async (req, res) => {
       return res.status(400).json({message: "Password must be at least 6 characters"});
     }
 
-    //check if email is valid: regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if(!emailRegex.test(email)){
       return res.status(400).json({message: "Invalid email format"});
@@ -30,7 +29,6 @@ export const signup = async (req, res) => {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    // 123456 => $iufduwfeiu_?lkii
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -52,8 +50,6 @@ export const signup = async (req, res) => {
         profilePic: newUser.profilePic,
       });
 
-      //todo: send a welcome email to user
-
       try{
         await sendWelcomeEmail(savedUser.email, savedUser.fullName, ENV.CLIENT_URL);
       } catch(error){
@@ -66,7 +62,7 @@ export const signup = async (req, res) => {
     }
 
   } catch (error) {
-    console.log("Error in signup controller:", error);
+    console.error("Error in signup controller:", error);
     res.status(500).json({ message: "Internal Server error" });
   }
 
@@ -129,7 +125,7 @@ export const updateProfile = async (req, res) => {
     res.status(200).json(updatedUser);
 
   } catch (error) {
-    console.log("Error in update profile:", error);
+    console.error("Error in update profile:", error);
     res.status(500).json({message: "Internal Server Error"})
   }
 }
