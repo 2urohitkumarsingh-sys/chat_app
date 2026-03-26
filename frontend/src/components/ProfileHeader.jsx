@@ -2,7 +2,7 @@ import { useState,useRef } from "react"
 import{LogOutIcon,VolumeOffIcon,Volume2Icon, ShieldCheck, Trash2} from "lucide-react";
 import {useAuthStore} from "../store/useAuthStore";
 import {useChatStore} from "../store/useChatStore";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 const mouseClickSound=new Audio("/sounds/mouse-click.mp3")
 

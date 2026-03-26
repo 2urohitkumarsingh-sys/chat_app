@@ -12,13 +12,24 @@ import {
   ChevronRight,
   ShieldCheck
 } from "lucide-react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState("stats");
-  const { logout, authUser } = useAuthStore();
+  const { authUser } = useAuthStore();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    if (!authUser) return;
+    if (authUser.role !== "admin") {
+      navigate("/");
+    }
+  }, [authUser, navigate]);
+
+  if (!authUser) {
+    return null;
+  }
 
   const menuItems = [
     { id: "stats", label: "Stats Overview", icon: <LayoutDashboard className="size-5" /> },

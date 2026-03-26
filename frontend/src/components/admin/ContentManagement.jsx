@@ -3,7 +3,7 @@ import { useAdminStore } from "../../store/useAdminStore";
 import { Trash2, MessageCircle, User, Clock, AlertTriangle } from "lucide-react";
 
 const ContentManagement = () => {
-  const { messages, getAllMessages, deleteMessage, isLoading } = useAdminStore();
+  const { messages, getAllMessages, deleteMessage } = useAdminStore();
 
   useEffect(() => {
     getAllMessages();

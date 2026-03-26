@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import BorderAnimatedContainer from "../components/BorderAnimatedContainer";
-import {Link} from "react-router";
+import {Link} from "react-router-dom";
 import {
   MessageCircleIcon,
   LockIcon,

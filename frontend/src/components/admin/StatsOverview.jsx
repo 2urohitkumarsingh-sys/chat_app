@@ -3,7 +3,7 @@ import { useAdminStore } from "../../store/useAdminStore";
 import { Users, MessageSquare, UserPlus, Zap, History, User, Activity } from "lucide-react";
 
 const StatsOverview = () => {
-  const { stats, getStats, logs, getLogs, isLoading } = useAdminStore();
+  const { stats, getStats, logs, getLogs } = useAdminStore();
 
   useEffect(() => {
     getStats();

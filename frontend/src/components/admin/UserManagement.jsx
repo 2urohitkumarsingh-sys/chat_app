@@ -3,7 +3,7 @@ import { useAdminStore } from "../../store/useAdminStore";
 import { Search, UserCheck, Trash2, ShieldCheck, ShieldAlert, UserPlus, Key, X, Loader2 } from "lucide-react";
 
 const UserManagement = () => {
-  const { users, getAllUsers, updateUserRole, deleteUser, createUser, resetPassword, isLoading } = useAdminStore();
+  const { users, getAllUsers, updateUserRole, deleteUser, createUser, resetPassword } = useAdminStore();
   const [showAddModal, setShowAddModal] = useState(false);
   const [newUser, setNewUser] = useState({ fullName: "", email: "", password: "", role: "user" });
   const [resettingId, setResettingId] = useState(null);
