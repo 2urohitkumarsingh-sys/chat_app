@@ -16,6 +16,7 @@ function ChatContainer() {
     subscribeToMessages,
     unsubscribeFromMessages,
     deleteMessage,
+    setSuggestedMessage,
   } = useChatStore();
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
@@ -84,7 +85,7 @@ function ChatContainer() {
         ) : isMessagesLoading ? (
           <MessagesLoadingSkeleton />
         ) : (
-          <NoChatHistoryPlaceholder name={selectedUser.fullName} />
+          <NoChatHistoryPlaceholder name={selectedUser?.fullName} onSendMessage={setSuggestedMessage} />
         )}
       </div>
 

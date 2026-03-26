@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import useKeyboardSound from "../hooks/useKeyboardSound";
 import { useChatStore } from "../store/useChatStore";
 import toast from "react-hot-toast";
@@ -11,7 +11,14 @@ function MessageInput() {
 
   const fileInputRef = useRef(null);
 
-  const { sendMessage, isSoundEnabled } = useChatStore();
+  const { sendMessage, isSoundEnabled, suggestedMessage, setSuggestedMessage } = useChatStore();
+
+  useEffect(() => {
+    if (suggestedMessage) {
+      setText(suggestedMessage);
+      setSuggestedMessage(""); // Clear it after setting
+    }
+  }, [suggestedMessage, setSuggestedMessage]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
