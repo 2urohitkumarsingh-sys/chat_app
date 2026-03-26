@@ -1,7 +1,8 @@
 import { useState,useRef } from "react"
-import{LogOutIcon,VolumeOffIcon,Volume2Icon} from "lucide-react";
+import{LogOutIcon,VolumeOffIcon,Volume2Icon, ShieldCheck} from "lucide-react";
 import {useAuthStore} from "../store/useAuthStore";
 import {useChatStore} from "../store/useChatStore";
+import { Link } from "react-router";
 
 const mouseClickSound=new Audio("/sounds/mouse-click.mp3")
 
@@ -48,6 +49,12 @@ function ProfileHeader() {
         </div>
         {/* buttons */}
         <div className="flex gap-4 items-center">
+          {/* admin btn */}
+          {authUser.role === "admin" && (
+            <Link to="/admin" className="text-slate-400 hover:text-cyan-400 transition-colors" title="Admin Dashboard">
+               <ShieldCheck className="size-5" />
+            </Link>
+          )}
           {/* logout btn */}
           <button className="text-slate-400 hover:text-slate-200 transition-colors" onClick={logout}><LogOutIcon className="size-5"/></button>
           {/* sound toggle btn */}

@@ -16,12 +16,38 @@ function SignUpPage() {
     email: "",
     password: "",
   });
-  const { signup, isSigningUp } = useAuthStore();
+  const { signup, isSigningUp, publicSettings } = useAuthStore();
+  const isRegistrationDisabled = publicSettings?.registration_enabled === false;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (isRegistrationDisabled) return;
     signup(formData);
   };
+
+  if (isRegistrationDisabled) {
+    return (
+      <div className="w-full flex items-center justify-center p-4 bg-slate-900/0">
+        <div className="relative w-full max-w-2xl">
+          <BorderAnimatedContainer>
+            <div className="p-12 text-center bg-slate-900/40 backdrop-blur-md rounded-3xl border border-slate-800">
+               <div className="size-20 bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <LockIcon className="size-10 text-slate-500" />
+               </div>
+               <h2 className="text-3xl font-bold text-white mb-4">Registration Closed</h2>
+               <p className="text-slate-400 mb-8 leading-relaxed">
+                 We are currently not accepting new signups. Please contact the administrator or check back later.
+               </p>
+               <Link to="/login" className="inline-flex items-center gap-2 text-cyan-500 hover:text-cyan-400 font-semibold transition-colors">
+                  <UserIcon className="size-4" />
+                  Back to Login
+               </Link>
+            </div>
+          </BorderAnimatedContainer>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="w-full flex items-center justify-center p-4 bg-slate-900">
       <div className="relative w-full max-w-6xl md:h-[800px] h-[650px]">

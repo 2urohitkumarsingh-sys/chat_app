@@ -1,15 +1,22 @@
 import { generateToken } from "../lib/utils.js";
 import User from "../models/User.js";
+import Setting from "../models/Setting.js";
 import bcrypt from "bcryptjs";
 import { sendWelcomeEmail } from "../emails/emailHandlers.js";
 import { ENV } from "../lib/env.js";
 import cloudinary from "../lib/cloudinary.js";
+import { createLog } from "./admin.controller.js";
 
 
 export const signup = async (req, res) => {
   const {fullName, email, password} = req.body;
 
   try {
+    const regSetting = await Setting.findOne({ key: "registration_enabled" });
+    if (regSetting && regSetting.value === false) {
+      return res.status(403).json({ message: "Registration is currently disabled by administrator" });
+    }
+
     if(!fullName || !email || !password){
       return res.status(400).json({message: "All fields are required"});
     }
@@ -45,6 +52,8 @@ export const signup = async (req, res) => {
       const savedUser = await newUser.save();
       generateToken(savedUser._id, res);
       
+      await createLog(savedUser._id, "SIGNUP", `User signed up: ${email}`);
+
       res.status(201).json({
         _id: newUser._id,
         fullName: newUser.fullName,
@@ -95,6 +104,8 @@ export const login = async(req,res)=>{
     }
 
     generateToken(user._id, res);
+
+    await createLog(user._id, "LOGIN", `User logged in: ${email}`);
 
     res.status(200).json({
       _id: user._id,

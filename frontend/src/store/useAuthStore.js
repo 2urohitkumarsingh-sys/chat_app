@@ -12,6 +12,16 @@ export const useAuthStore = create((set, get) => ({
   isLoggingIn: false,
   socket: null,
   onlineUsers: [],
+  publicSettings: null,
+
+  getPublicSettings: async () => {
+    try {
+      const res = await axiosInstance.get("/admin/public-settings");
+      set({ publicSettings: res.data });
+    } catch (error) {
+      console.log("Error in getPublicSettings:", error);
+    }
+  },
 
   checkAuth: async () => {
     try {
