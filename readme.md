@@ -50,14 +50,9 @@ Use cookie-parser to read JWTs or session tokens stored in cookies for    user a
 
 - npm init -y
 
--  npm run build
+- npm run build
 
--
-
-
-
-# deploy 
- - on the https://sevalla.com/
+- feature: double-click any shared chat image to open a fullscreen preview
 
 
 # mongodb - database
@@ -116,4 +111,3 @@ backend:-
 frontend:-
 . npm i socket.io-client
 
-https://chatapp-tvx7q.sevalla.app/login

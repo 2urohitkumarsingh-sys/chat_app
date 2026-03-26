@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
 import ChatHeader from "./ChatHeader";
 import NoChatHistoryPlaceholder from "./NoChatHistoryPlaceholder";
 import MessageInput from "./MessageInput";
 import MessagesLoadingSkeleton from "./MessagesLoadingSkeleton";
-import { Trash2 } from "lucide-react";
+import { Trash2, X } from "lucide-react";
 
 function ChatContainer() {
   const {
@@ -20,6 +20,7 @@ function ChatContainer() {
   } = useChatStore();
   const { authUser } = useAuthStore();
   const messageEndRef = useRef(null);
+  const [modalImage, setModalImage] = useState(null);
 
   useEffect(() => {
     getMessagesByUserId(selectedUser._id);
@@ -54,7 +55,12 @@ function ChatContainer() {
                   }`}
                 >
                   {msg.image && (
-                    <img src={msg.image} alt="Shared" className="rounded-lg h-48 object-cover" />
+                    <img
+                      src={msg.image}
+                      alt="Shared"
+                      className="rounded-lg h-48 object-cover cursor-zoom-in"
+                      onDoubleClick={() => setModalImage(msg.image)}
+                    />
                   )}
                   {msg.text && <p className="mt-2">{msg.text}</p>}
                   <p className="text-xs mt-1 opacity-75 flex items-center gap-1">
@@ -90,6 +96,32 @@ function ChatContainer() {
       </div>
 
       <MessageInput />
+
+      {modalImage && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+          onClick={() => setModalImage(null)}
+        >
+          <div className="relative max-w-[95vw] max-h-[95vh]">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setModalImage(null);
+              }}
+              className="absolute -top-4 -right-4 rounded-full bg-white/90 p-2 text-black hover:bg-white"
+              aria-label="Close"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            <img
+              src={modalImage}
+              alt="Full view"
+              className="max-w-[95vw] max-h-[95vh] object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 }
