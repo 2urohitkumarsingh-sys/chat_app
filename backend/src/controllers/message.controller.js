@@ -106,3 +106,36 @@ export const getChatPartners = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const deleteMessage = async (req, res) => {
+  try {
+    const { id: messageId } = req.params;
+    const userId = req.user._id;
+
+    // Find the message
+    const message = await Message.findById(messageId);
+    if (!message) {
+      return res.status(404).json({ message: "Message not found." });
+    }
+
+    // Check if the user is the sender or receiver
+    if (!message.senderId.equals(userId) && !message.receiverId.equals(userId)) {
+      return res.status(403).json({ message: "You can only delete your own messages." });
+    }
+
+    // Delete the message
+    await Message.findByIdAndDelete(messageId);
+
+    // Notify the other user via socket
+    const otherUserId = message.senderId.equals(userId) ? message.receiverId : message.senderId;
+    const otherUserSocketId = getReceiverSocketId(otherUserId);
+    if (otherUserSocketId) {
+      io.to(otherUserSocketId).emit("messageDeleted", messageId);
+    }
+
+    res.status(200).json({ message: "Message deleted successfully." });
+  } catch (error) {
+    console.log("Error in deleteMessage controller: ", error.message);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

@@ -1,5 +1,5 @@
 import { useState,useRef } from "react"
-import{LogOutIcon,VolumeOffIcon,Volume2Icon, ShieldCheck} from "lucide-react";
+import{LogOutIcon,VolumeOffIcon,Volume2Icon, ShieldCheck, Trash2} from "lucide-react";
 import {useAuthStore} from "../store/useAuthStore";
 import {useChatStore} from "../store/useChatStore";
 import { Link } from "react-router";
@@ -7,7 +7,7 @@ import { Link } from "react-router";
 const mouseClickSound=new Audio("/sounds/mouse-click.mp3")
 
 function ProfileHeader() {
-  const {logout,authUser,updateProfile} = useAuthStore();
+  const {logout,authUser,updateProfile,deleteAccount} = useAuthStore();
   const {isSoundEnabled, toggleSound} = useChatStore();
    const [selectedImg, setSelectedImg] = useState(null);
 
@@ -55,6 +55,18 @@ function ProfileHeader() {
                <ShieldCheck className="size-5" />
             </Link>
           )}
+          {/* delete account btn */}
+          <button 
+            className="text-slate-400 hover:text-red-400 transition-colors" 
+            onClick={() => {
+              if (window.confirm("Are you sure you want to delete your account? This action cannot be undone and will delete all your messages.")) {
+                deleteAccount();
+              }
+            }}
+            title="Delete Account"
+          >
+            <Trash2 className="size-5"/>
+          </button>
           {/* logout btn */}
           <button className="text-slate-400 hover:text-slate-200 transition-colors" onClick={logout}><LogOutIcon className="size-5"/></button>
           {/* sound toggle btn */}

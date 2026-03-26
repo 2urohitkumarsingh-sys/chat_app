@@ -1,6 +1,7 @@
 import { generateToken } from "../lib/utils.js";
 import User from "../models/User.js";
 import Setting from "../models/Setting.js";
+import Message from "../models/Message.js";
 import bcrypt from "bcryptjs";
 import { sendWelcomeEmail } from "../emails/emailHandlers.js";
 import { ENV } from "../lib/env.js";
@@ -142,6 +143,33 @@ export const updateProfile = async (req, res) => {
   } catch (error) {
     console.log("Error in update profile:", error);
     res.status(500).json({message: "Internal Server Error"})
+  }
+}
+
+export const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Delete all messages sent or received by the user
+    await Message.deleteMany({
+      $or: [
+        { senderId: userId },
+        { receiverId: userId }
+      ]
+    });
+
+    // Delete the user
+    await User.findByIdAndDelete(userId);
+
+    // Clear the JWT cookie
+    res.cookie("jwt", "", { maxAge: 0 });
+
+    await createLog(userId, "DELETE_ACCOUNT", `User deleted their account`);
+
+    res.status(200).json({ message: "Account deleted successfully" });
+  } catch (error) {
+    console.log("Error in delete account:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 }
 
